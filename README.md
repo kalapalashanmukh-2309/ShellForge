@@ -41,6 +41,8 @@ The browser terminal is **single-user**. Local commands have the permissions of 
 
 ### Hosted frontend
 
+Website: [ShellForge Terminal](https://shellforge-terminal.mellowsole1.chatgpt.site) (private to the publishing account).
+
 The hosted website is a frontend for your own running server. Static hosting cannot execute `fork`, `exec`, or POSIX threads. In its connection dialog, use the displayed origin-specific startup command, then enter your local server's access token. Browser support for local-network requests varies; the local website link always avoids cross-origin connection requirements.
 
 An always-online, multi-user service requires a separately provisioned Linux backend with HTTPS, identity-based access and per-user isolation. It is not provided by the static deployment.
@@ -149,6 +151,8 @@ The handbook's sample implements only `>` and `>>`; this project also implements
 External execution uses `posix_spawn()`-family calls plus a fresh `execvp()` launcher. This avoids running built-ins or library code in the forked memory of a multithreaded parent. The earlier standalone examples still teach `fork()` and `wait()`.
 
 ## Build and test
+
+[Implementation pull request](https://github.com/Hemani29/ShellForge/pull/1) · [Verified Linux/macOS run](https://github.com/kalapalashanmukh-2309/ShellForge/actions/runs/37881012086). This run passed 33 shell tests and 7 backend tests on both platforms, plus all 33 shell tests under ASan/UBSan on Linux.
 
 ```sh
 make test          # Shell integration and PTY signal tests
