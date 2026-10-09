@@ -3,13 +3,14 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int main()
+int main(void)
 {
     pid_t pid;
     int status;
 
     printf("Parent Process: PID = %d\n", getpid());
 
+    fflush(NULL);
     pid = fork();
 
     if (pid < 0)

@@ -1,4 +1,11 @@
 bin/
+build/
 *.o
 *.exe
 *.out
+__pycache__/
+.venv/
+.env
+.DS_Store
+web/workspace/
+.openai/

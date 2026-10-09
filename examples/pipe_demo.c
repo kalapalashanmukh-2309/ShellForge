@@ -23,11 +23,13 @@ void demonstrate_producer_consumer(void)
         return;
     }
 
+    fflush(NULL);
     pid = fork();
 
     if (pid == -1)
     {
         perror("fork");
+        close(fd[0]); close(fd[1]);
         return;
     }
 
@@ -51,6 +53,8 @@ void demonstrate_producer_consumer(void)
         printf("Consumer PID: %d\n", getpid());
         printf("Data received: %d bytes\n", total_bytes);
         printf("Consumer completed.\n");
+        fflush(stdout);
+        _exit(0);
     }
     else
     {

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 #include "../include/pipe.h"
 
@@ -20,11 +21,14 @@ void demonstrate_ls_grep_pipe(void)
     printf("\n=== ls -l | grep \".c\" Demo ===\n");
 
     /* First child: ls -l */
+    fflush(NULL);
     ls_pid = fork();
 
     if (ls_pid == -1)
     {
         perror("fork");
+        close(fd[0]); close(fd[1]);
+        if (ls_pid > 0) { kill(ls_pid, SIGKILL); waitpid(ls_pid, NULL, 0); }
         return;
     }
 
@@ -37,7 +41,7 @@ void demonstrate_ls_grep_pipe(void)
 
 execlp("ls", "ls", "-l", "src", NULL);
         perror("execlp ls");
-        exit(EXIT_FAILURE);
+        _exit(EXIT_FAILURE);
     }
 
     /* Second child: grep ".c" */
@@ -46,6 +50,8 @@ execlp("ls", "ls", "-l", "src", NULL);
     if (grep_pid == -1)
     {
         perror("fork");
+        close(fd[0]); close(fd[1]);
+        if (ls_pid > 0) { kill(ls_pid, SIGKILL); waitpid(ls_pid, NULL, 0); }
         return;
     }
 
@@ -59,7 +65,7 @@ execlp("ls", "ls", "-l", "src", NULL);
 execlp("grep", "grep", "\\.c$", NULL);
 
         perror("execlp grep");
-        exit(EXIT_FAILURE);
+        _exit(EXIT_FAILURE);
     }
 
     /* Parent */
